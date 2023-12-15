@@ -4,6 +4,7 @@ import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/router'
 
 const claimUsernameFormSchema = z.object({
   username: z
@@ -28,8 +29,12 @@ export function ClaimUsernameForm() {
     resolver: zodResolver(claimUsernameFormSchema),
   })
 
+  const router = useRouter()
+
   async function handleClaimUsername(data: ClaimUsernameFormData) {
-    console.log(data)
+    const { username } = data
+    // without await async, isSubmitting wont work
+    await router.push(`/register?username=${username}`)
   }
 
   return (
@@ -38,7 +43,7 @@ export function ClaimUsernameForm() {
         <TextInput
           size={'sm'}
           prefix="ignite.com/"
-          placeholder="seu usuário"
+          placeholder="seu-usuario"
           crossOrigin={undefined}
           {...register('username')}
         />
